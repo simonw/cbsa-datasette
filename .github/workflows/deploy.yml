@@ -1,0 +1,51 @@
+name: Build and deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - uses: actions/cache@v2
+      name: Configure pip caching
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    - name: Install SpatiaLite and libgeos
+      run: sudo apt-get install spatialite-bin libsqlite3-mod-spatialite
+    - name: Install Python dependencies
+      run: |
+        pip install -r requirements.txt
+    - name: Download shapefile
+      run: wget https://opendata.arcgis.com/datasets/b0d0e777e2ad4b53803dbc0527c73d88_0.zip
+    - name: Build core.db
+      run: |
+        shapefile-to-sqlite core.db b0d0e777e2ad4b53803dbc0527c73d88_0.zip \
+          --table Core_Based_Statistical_Areas \
+          --spatial-index
+    - name: Set up Cloud Run
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        version: '275.0.0'
+        service_account_email: ${{ secrets.GCP_SA_EMAIL }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+    - name: Deploy to Cloud Run
+      run: |-
+        gcloud config set run/region us-central1
+        gcloud config set project datasette-222320
+        datasette publish cloudrun core.db \
+        --spatialite \
+        --metadata=metadata.yml \
+        --service=cbsa \
+        --install=datasette-leaflet-geojson \
+        --install=datasette-graphql \
+        --install=datasette-block-robots \
+        --extra-options="--setting default_page_size 10"
