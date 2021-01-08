@@ -1,0 +1,32 @@
+title: Core Based Statistical Areas
+source: Bureau of Transportation Statistics
+source_url: https://data-usdot.opendata.arcgis.com/datasets/b0d0e777e2ad4b53803dbc0527c73d88_0
+license: Custom License
+license_url: https://data-usdot.opendata.arcgis.com/datasets/b0d0e777e2ad4b53803dbc0527c73d88_0
+databases:
+  core:
+    queries:
+      by_lat_lon:
+        sql: |-
+          select
+            *
+          from
+            [Core_Based_Statistical_Areas]
+          where
+            within(
+              GeomFromText(
+                'POINT(' || :longitude || ' ' || :latitude || ')'
+              ),
+              [Core_Based_Statistical_Areas].geometry
+            )
+            and rowid in (
+              SELECT
+                pkid
+              FROM
+                [idx_Core_Based_Statistical_Areas_geometry]
+              where
+                xmin < :longitude
+                and xmax > :longitude
+                and ymin < :latitude
+                and ymax > :latitude
+            )
