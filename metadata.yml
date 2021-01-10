@@ -11,7 +11,7 @@ databases:
       by_lat_lon:
         sql: |-
           select
-            *
+            OBJECTID, CSAFP, CBSAFP, GEOID, NAME, NAMELSAD, LSAD, MEMI, MTFCC, ALAND, AWATER, INTPTLAT, INTPTLON, Shape_Leng, Shape_Area
           from
             [Core_Based_Statistical_Areas]
           where
