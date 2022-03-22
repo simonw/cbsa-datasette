@@ -48,4 +48,5 @@ jobs:
         --install=datasette-leaflet-geojson \
         --install=datasette-graphql \
         --install=datasette-block-robots \
+        --install=datasette-geojson-map \
         --extra-options="--setting default_page_size 10"
