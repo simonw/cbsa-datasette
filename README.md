@@ -6,13 +6,15 @@ More details: [cbsa-datasette in my Weeknotes](https://simonwillison.net/2021/Ja
 
 ## Running this locally
 
-Download the shapefile from [Bureau of Transportation Stastics: Core Based Statistical Areas](https://data-usdot.opendata.arcgis.com/datasets/b0d0e777e2ad4b53803dbc0527c73d88_0):
+Download the shapefile from [Bureau of Transportation Stastics: Core Based Statistical Areas](https://geodata.bts.gov/datasets/usdot::core-based-statistical-areas/explore).
 
-    wget https://opendata.arcgis.com/datasets/b0d0e777e2ad4b53803dbc0527c73d88_0.zip
+I have a copy of the file available here:
+
+`wget https://static.simonwillison.net/static/2023/Core_Based_Statistical_Areas.zip`
 
 Install [shapefile-to-sqlite](https://datasette.io/tools/shapefile-to-sqlite) and [SpatiaLite](https://docs.datasette.io/en/stable/spatialite.html#installation) and run this command:
 
-    shapefile-to-sqlite core.db b0d0e777e2ad4b53803dbc0527c73d88_0.zip \
+    shapefile-to-sqlite core.db Core_Based_Statistical_Areas.zip \
         --table Core_Based_Statistical_Areas \
         --spatial-index
 

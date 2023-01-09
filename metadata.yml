@@ -1,8 +1,8 @@
 title: Core Based Statistical Areas
 source: Bureau of Transportation Statistics
-source_url: https://data-usdot.opendata.arcgis.com/datasets/b0d0e777e2ad4b53803dbc0527c73d88_0
+source_url: https://geodata.bts.gov/datasets/usdot::core-based-statistical-areas/explore
 license: Custom License
-license_url: https://data-usdot.opendata.arcgis.com/datasets/b0d0e777e2ad4b53803dbc0527c73d88_0
+license_url: https://geodata.bts.gov/datasets/usdot::core-based-statistical-areas/explore
 about: simonw/cbsa-datasette
 about_url: https://github.com/simonw/cbsa-datasette
 allow_sql:
